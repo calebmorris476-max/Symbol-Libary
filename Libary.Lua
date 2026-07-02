@@ -1,55 +1,50 @@
 --[[
     Symbol.hit UI Library
-    A 1:1 recreation of the Symbol.hit cheat GUI with Theme Changers
-    FIXED: Proper ZIndex layering for tabs, dropdowns, toggles, color pickers
+    Pixel-perfect 1:1 recreation
 ]]
 
 local Symbol = {}
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
-local Mouse = LocalPlayer:GetMouse()
 
--- ==================== THEME SYSTEM ====================
+-- ==================== EXACT COLORS FROM SCREENSHOTS ====================
 local Themes = {
     Default = {
         Background = Color3.fromRGB(22, 22, 22),
         SectionBg = Color3.fromRGB(28, 28, 28),
         Border = Color3.fromRGB(58, 58, 58),
         OuterBorder = Color3.fromRGB(20, 42, 26),
-        Text = Color3.fromRGB(180, 180, 178),
-        TextBright = Color3.fromRGB(200, 200, 198),
-        Accent = Color3.fromRGB(45, 195, 62),
-        AccentBright = Color3.fromRGB(60, 210, 80),
+        Text = Color3.fromRGB(170, 170, 168),
+        TextBright = Color3.fromRGB(175, 175, 173),
+        Accent = Color3.fromRGB(45, 211, 69),
+        AccentBright = Color3.fromRGB(60, 225, 80),
         AccentDark = Color3.fromRGB(0, 140, 0),
-        AccentGlow = Color3.fromRGB(50, 180, 80),
-        SliderFill = Color3.fromRGB(20, 220, 50),
-        SliderGlow = Color3.fromRGB(80, 200, 100),
-        TabText = Color3.fromRGB(170, 170, 170),
-        TabActive = Color3.fromRGB(220, 220, 220),
-        TabInactive = Color3.fromRGB(130, 130, 130),
-        SectionTitle = Color3.fromRGB(190, 190, 188),
-        SectionUnderline = Color3.fromRGB(180, 180, 180),
+        SliderFill = Color3.fromRGB(14, 203, 40),
+        SliderGlow = Color3.fromRGB(67, 192, 96),
+        TabText = Color3.fromRGB(170, 170, 168),
+        TabActive = Color3.fromRGB(170, 170, 168),
+        TabInactive = Color3.fromRGB(85, 90, 85),
+        SectionTitle = Color3.fromRGB(168, 176, 167),
+        SectionUnderline = Color3.fromRGB(168, 176, 167),
         DropdownBg = Color3.fromRGB(30, 30, 28),
         DropdownBorder = Color3.fromRGB(65, 65, 63),
-        KeybindsBg = Color3.fromRGB(23, 46, 37),
+        KeybindsBg = Color3.fromRGB(21, 29, 21),
         KeybindsBorder = Color3.fromRGB(59, 81, 68),
-        KeybindsTitleBg = Color3.fromRGB(0, 30, 0),
-        KeybindsText = Color3.fromRGB(190, 190, 188),
-        NameTagBg = Color3.fromRGB(28, 28, 26),
-        NameTagBorder = Color3.fromRGB(0, 80, 0),
-        NameTagText = Color3.fromRGB(50, 220, 70),
-        NameTagTextDim = Color3.fromRGB(100, 170, 110),
-        CheckboxBg = Color3.fromRGB(25, 25, 25),
-        CheckboxBorder = Color3.fromRGB(55, 55, 55),
-        SliderTrack = Color3.fromRGB(50, 65, 50),
-        SliderTrackBg = Color3.fromRGB(80, 95, 80),
+        KeybindsTitleBg = Color3.fromRGB(0, 22, 0),
+        KeybindsText = Color3.fromRGB(170, 170, 168),
+        NameTagBg = Color3.fromRGB(31, 28, 31),
+        NameTagBorder = Color3.fromRGB(0, 51, 0),
+        NameTagText = Color3.fromRGB(45, 211, 69),
+        NameTagTextDim = Color3.fromRGB(92, 142, 98),
+        CheckboxBg = Color3.fromRGB(22, 22, 22),
+        CheckboxBorder = Color3.fromRGB(40, 40, 40),
+        SliderTrack = Color3.fromRGB(42, 57, 42),
+        SliderTrackBg = Color3.fromRGB(118, 133, 119),
         White = Color3.fromRGB(255, 255, 255),
         Black = Color3.fromRGB(0, 0, 0),
     },
-
     Dark = {
         Background = Color3.fromRGB(15, 15, 15),
         SectionBg = Color3.fromRGB(22, 22, 22),
@@ -60,7 +55,6 @@ local Themes = {
         Accent = Color3.fromRGB(130, 130, 130),
         AccentBright = Color3.fromRGB(160, 160, 160),
         AccentDark = Color3.fromRGB(80, 80, 80),
-        AccentGlow = Color3.fromRGB(110, 110, 110),
         SliderFill = Color3.fromRGB(140, 140, 140),
         SliderGlow = Color3.fromRGB(170, 170, 170),
         TabText = Color3.fromRGB(160, 160, 160),
@@ -85,7 +79,6 @@ local Themes = {
         White = Color3.fromRGB(255, 255, 255),
         Black = Color3.fromRGB(0, 0, 0),
     },
-
     Light = {
         Background = Color3.fromRGB(245, 245, 245),
         SectionBg = Color3.fromRGB(235, 235, 235),
@@ -96,7 +89,6 @@ local Themes = {
         Accent = Color3.fromRGB(0, 150, 200),
         AccentBright = Color3.fromRGB(0, 170, 220),
         AccentDark = Color3.fromRGB(0, 100, 150),
-        AccentGlow = Color3.fromRGB(0, 130, 180),
         SliderFill = Color3.fromRGB(0, 150, 200),
         SliderGlow = Color3.fromRGB(0, 170, 220),
         TabText = Color3.fromRGB(80, 80, 80),
@@ -121,7 +113,6 @@ local Themes = {
         White = Color3.fromRGB(255, 255, 255),
         Black = Color3.fromRGB(0, 0, 0),
     },
-
     Red = {
         Background = Color3.fromRGB(22, 15, 15),
         SectionBg = Color3.fromRGB(30, 20, 20),
@@ -132,7 +123,6 @@ local Themes = {
         Accent = Color3.fromRGB(230, 60, 60),
         AccentBright = Color3.fromRGB(250, 80, 80),
         AccentDark = Color3.fromRGB(160, 35, 35),
-        AccentGlow = Color3.fromRGB(210, 50, 50),
         SliderFill = Color3.fromRGB(230, 60, 60),
         SliderGlow = Color3.fromRGB(250, 80, 80),
         TabText = Color3.fromRGB(190, 170, 170),
@@ -157,7 +147,6 @@ local Themes = {
         White = Color3.fromRGB(255, 255, 255),
         Black = Color3.fromRGB(0, 0, 0),
     },
-
     Purple = {
         Background = Color3.fromRGB(18, 15, 22),
         SectionBg = Color3.fromRGB(26, 21, 32),
@@ -168,7 +157,6 @@ local Themes = {
         Accent = Color3.fromRGB(190, 90, 230),
         AccentBright = Color3.fromRGB(210, 110, 250),
         AccentDark = Color3.fromRGB(130, 55, 160),
-        AccentGlow = Color3.fromRGB(170, 75, 210),
         SliderFill = Color3.fromRGB(190, 90, 230),
         SliderGlow = Color3.fromRGB(210, 110, 250),
         TabText = Color3.fromRGB(190, 180, 200),
@@ -193,7 +181,6 @@ local Themes = {
         White = Color3.fromRGB(255, 255, 255),
         Black = Color3.fromRGB(0, 0, 0),
     },
-
     Blue = {
         Background = Color3.fromRGB(15, 18, 25),
         SectionBg = Color3.fromRGB(22, 27, 38),
@@ -204,7 +191,6 @@ local Themes = {
         Accent = Color3.fromRGB(55, 140, 255),
         AccentBright = Color3.fromRGB(75, 160, 255),
         AccentDark = Color3.fromRGB(35, 90, 200),
-        AccentGlow = Color3.fromRGB(45, 120, 235),
         SliderFill = Color3.fromRGB(55, 140, 255),
         SliderGlow = Color3.fromRGB(75, 160, 255),
         TabText = Color3.fromRGB(170, 180, 200),
@@ -229,7 +215,6 @@ local Themes = {
         White = Color3.fromRGB(255, 255, 255),
         Black = Color3.fromRGB(0, 0, 0),
     },
-
     Orange = {
         Background = Color3.fromRGB(22, 18, 12),
         SectionBg = Color3.fromRGB(32, 27, 18),
@@ -240,7 +225,6 @@ local Themes = {
         Accent = Color3.fromRGB(240, 150, 35),
         AccentBright = Color3.fromRGB(255, 170, 45),
         AccentDark = Color3.fromRGB(190, 110, 22),
-        AccentGlow = Color3.fromRGB(220, 130, 28),
         SliderFill = Color3.fromRGB(240, 150, 35),
         SliderGlow = Color3.fromRGB(255, 170, 45),
         TabText = Color3.fromRGB(200, 190, 170),
@@ -265,7 +249,6 @@ local Themes = {
         White = Color3.fromRGB(255, 255, 255),
         Black = Color3.fromRGB(0, 0, 0),
     },
-
     Pink = {
         Background = Color3.fromRGB(22, 15, 18),
         SectionBg = Color3.fromRGB(32, 22, 27),
@@ -276,7 +259,6 @@ local Themes = {
         Accent = Color3.fromRGB(240, 90, 160),
         AccentBright = Color3.fromRGB(255, 110, 180),
         AccentDark = Color3.fromRGB(190, 55, 120),
-        AccentGlow = Color3.fromRGB(220, 75, 140),
         SliderFill = Color3.fromRGB(240, 90, 160),
         SliderGlow = Color3.fromRGB(255, 110, 180),
         TabText = Color3.fromRGB(200, 180, 190),
@@ -301,7 +283,6 @@ local Themes = {
         White = Color3.fromRGB(255, 255, 255),
         Black = Color3.fromRGB(0, 0, 0),
     },
-
     Gold = {
         Background = Color3.fromRGB(20, 18, 10),
         SectionBg = Color3.fromRGB(30, 27, 15),
@@ -312,7 +293,6 @@ local Themes = {
         Accent = Color3.fromRGB(230, 200, 55),
         AccentBright = Color3.fromRGB(250, 220, 65),
         AccentDark = Color3.fromRGB(180, 150, 32),
-        AccentGlow = Color3.fromRGB(210, 180, 42),
         SliderFill = Color3.fromRGB(230, 200, 55),
         SliderGlow = Color3.fromRGB(250, 220, 65),
         TabText = Color3.fromRGB(200, 195, 170),
@@ -357,10 +337,8 @@ local function UpdateTheme(themeName, customColors)
             theme[k] = v
         end
     end
-
     Colors = theme
     CurrentTheme = themeName
-
     for colorKey, objects in pairs(ThemeObjects) do
         local color = theme[colorKey]
         if color then
@@ -415,7 +393,6 @@ local function MakeDraggable(frame, handle)
     handle = handle or frame
     local dragging = false
     local dragInput, dragStart, startPos
-
     handle.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
@@ -428,13 +405,11 @@ local function MakeDraggable(frame, handle)
             end)
         end
     end)
-
     handle.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             dragInput = input
         end
     end)
-
     UserInputService.InputChanged:Connect(function(input)
         if input == dragInput and dragging then
             local delta = input.Position - dragStart
@@ -816,7 +791,7 @@ function Checkbox.New(parent, text, default, callback)
         Name = "Box",
         Parent = self.Container,
         BackgroundColor3 = Colors.CheckboxBg,
-        BorderColor3 = Colors.Border,
+        BorderColor3 = Colors.CheckboxBorder,
         BorderSizePixel = 1,
         Size = UDim2.new(0, 10, 0, 10),
         Position = UDim2.new(0, 4, 0, 4),
@@ -1494,148 +1469,3 @@ function NameTag.New(parent, text)
 
     return self
 end
-
--- ==================== MAIN WINDOW ====================
-local Window = {}
-Window.__index = Window
-
-function Window.New(title)
-    local self = setmetatable({}, Window)
-    self.Tabs = {}
-    self.ActiveTab = nil
-    self.Visible = true
-
-    -- CRITICAL: Use Global ZIndexBehavior so ZIndex works across the entire UI
-    self.Gui = Create("ScreenGui", {
-        Name = "SymbolHitUI",
-        Parent = game.CoreGui or LocalPlayer:WaitForChild("PlayerGui"),
-        ResetOnSpawn = false,
-        ZIndexBehavior = Enum.ZIndexBehavior.Global,
-        DisplayOrder = 999,
-    })
-
-    self.Main = Create("Frame", {
-        Name = "Main",
-        Parent = self.Gui,
-        BackgroundColor3 = Colors.Background,
-        BorderColor3 = Colors.OuterBorder,
-        BorderSizePixel = 1,
-        Size = UDim2.new(0, 510, 0, 652),
-        Position = UDim2.new(0.5, -255, 0.5, -326),
-        ZIndex = 10,
-    })
-    RegisterThemeObject(self.Main, "BackgroundColor3", "Background")
-    RegisterThemeObject(self.Main, "BorderColor3", "OuterBorder")
-
-    local mainStroke = Create("UIStroke", {
-        Color = Colors.OuterBorder,
-        Thickness = 1,
-        Parent = self.Main,
-        ZIndex = 10,
-    })
-    RegisterThemeObject(mainStroke, "Color", "OuterBorder")
-
-    -- Title bar at top (above tabs)
-    self.TitleBar = Create("Frame", {
-        Name = "TitleBar",
-        Parent = self.Main,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 20),
-        Position = UDim2.new(0, 0, 0, 0),
-        ZIndex = 15,
-    })
-
-    self.Title = Create("TextLabel", {
-        Name = "Title",
-        Parent = self.TitleBar,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 1, 0),
-        Font = Enum.Font.SourceSansSemibold,
-        Text = "Symbol.hit",
-        TextColor3 = Colors.Accent,
-        TextSize = 13,
-        TextXAlignment = Enum.TextXAlignment.Center,
-        ZIndex = 15,
-    })
-    RegisterThemeObject(self.Title, "TextColor3", "Accent")
-
-    -- Tab bar with HIGH ZIndex so tabs render above everything
-    self.TabBar = Create("Frame", {
-        Name = "TabBar",
-        Parent = self.Main,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, -20, 0, 28),
-        Position = UDim2.new(0, 10, 0, 20),
-        ZIndex = 15,
-    })
-
-    local tabList = ListLayout(self.TabBar, 0, Enum.HorizontalAlignment.Left)
-
-    -- Content frame (lower ZIndex than tabs)
-    self.ContentFrame = Create("Frame", {
-        Name = "Content",
-        Parent = self.Main,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, -20, 1, -55),
-        Position = UDim2.new(0, 10, 0, 50),
-        ZIndex = 1,
-    })
-
-    self.NameTag = NameTag.New(self.Main, title or "Symbol.hit | private")
-    self.Keybinds = KeybindsPanel.New(self.Gui)
-
-    MakeDraggable(self.Main, self.TitleBar)
-
-    UserInputService.InputBegan:Connect(function(input, gameProcessed)
-        if not gameProcessed and input.KeyCode == Enum.KeyCode.Insert then
-            self:Toggle()
-        end
-    end)
-
-    return self
-end
-
-function Window:CreateTab(name)
-    local tab = Tab.New(self.TabBar, name, self)
-    table.insert(self.Tabs, tab)
-
-    if #self.Tabs == 1 then
-        self:SelectTab(tab)
-    end
-
-    return tab
-end
-
-function Window:SelectTab(tab)
-    if self.ActiveTab then
-        self.ActiveTab:Hide()
-    end
-    self.ActiveTab = tab
-    tab:Show()
-end
-
-function Window:AddKeybind(key, action, callback)
-    self.Keybinds:AddKeybind(key, action, callback)
-end
-
-function Window:Toggle(show)
-    if show ~= nil then
-        self.Visible = show
-    else
-        self.Visible = not self.Visible
-    end
-    self.Main.Visible = self.Visible
-    self.Keybinds.Container.Visible = self.Visible
-    self.NameTag.Container.Visible = self.Visible
-end
-
-function Window:Destroy()
-    self.Gui:Destroy()
-end
-
--- ==================== SYMBOL LIBRARY ====================
-function Symbol:CreateWindow(title)
-    return Window.New(title)
-end
-
-return Symbol
