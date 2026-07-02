@@ -1469,3 +1469,145 @@ function NameTag.New(parent, text)
 
     return self
 end
+
+
+-- ==================== MAIN WINDOW ====================
+local Window = {}
+Window.__index = Window
+
+function Window.New(title)
+    local self = setmetatable({}, Window)
+    self.Tabs = {}
+    self.ActiveTab = nil
+    self.Visible = true
+
+    self.Gui = Create("ScreenGui", {
+        Name = "SymbolHitUI",
+        Parent = game.CoreGui or LocalPlayer:WaitForChild("PlayerGui"),
+        ResetOnSpawn = false,
+        ZIndexBehavior = Enum.ZIndexBehavior.Global,
+        DisplayOrder = 999,
+    })
+
+    self.Main = Create("Frame", {
+        Name = "Main",
+        Parent = self.Gui,
+        BackgroundColor3 = Colors.Background,
+        BorderColor3 = Colors.OuterBorder,
+        BorderSizePixel = 1,
+        Size = UDim2.new(0, 510, 0, 652),
+        Position = UDim2.new(0.5, -255, 0.5, -326),
+        ZIndex = 10,
+    })
+    RegisterThemeObject(self.Main, "BackgroundColor3", "Background")
+    RegisterThemeObject(self.Main, "BorderColor3", "OuterBorder")
+
+    local mainStroke = Create("UIStroke", {
+        Color = Colors.OuterBorder,
+        Thickness = 1,
+        Parent = self.Main,
+        ZIndex = 10,
+    })
+    RegisterThemeObject(mainStroke, "Color", "OuterBorder")
+
+    self.TitleBar = Create("Frame", {
+        Name = "TitleBar",
+        Parent = self.Main,
+        BackgroundTransparency = 1,
+        Size = UDim2.new(1, 0, 0, 20),
+        Position = UDim2.new(0, 0, 0, 0),
+        ZIndex = 15,
+    })
+
+    self.Title = Create("TextLabel", {
+        Name = "Title",
+        Parent = self.TitleBar,
+        BackgroundTransparency = 1,
+        Size = UDim2.new(1, 0, 1, 0),
+        Font = Enum.Font.SourceSansSemibold,
+        Text = "Symbol.hit",
+        TextColor3 = Colors.Accent,
+        TextSize = 13,
+        TextXAlignment = Enum.TextXAlignment.Center,
+        ZIndex = 15,
+    })
+    RegisterThemeObject(self.Title, "TextColor3", "Accent")
+
+    self.TabBar = Create("Frame", {
+        Name = "TabBar",
+        Parent = self.Main,
+        BackgroundTransparency = 1,
+        Size = UDim2.new(1, -20, 0, 28),
+        Position = UDim2.new(0, 10, 0, 20),
+        ZIndex = 15,
+    })
+
+    local tabList = ListLayout(self.TabBar, 0, Enum.HorizontalAlignment.Left)
+
+    self.ContentFrame = Create("Frame", {
+        Name = "Content",
+        Parent = self.Main,
+        BackgroundTransparency = 1,
+        Size = UDim2.new(1, -20, 1, -55),
+        Position = UDim2.new(0, 10, 0, 50),
+        ZIndex = 1,
+    })
+
+    self.NameTag = NameTag.New(self.Main, title or "Symbol.hit | private")
+    self.Keybinds = KeybindsPanel.New(self.Gui)
+
+    MakeDraggable(self.Main, self.TitleBar)
+
+    UserInputService.InputBegan:Connect(function(input, gameProcessed)
+        if not gameProcessed and input.KeyCode == Enum.KeyCode.Insert then
+            self:Toggle()
+        end
+    end)
+
+    return self
+end
+
+function Window:CreateTab(name)
+    local tab = Tab.New(self.TabBar, name, self)
+    table.insert(self.Tabs, tab)
+
+    if #self.Tabs == 1 then
+        self:SelectTab(tab)
+    end
+
+    return tab
+end
+
+function Window:SelectTab(tab)
+    if self.ActiveTab then
+        self.ActiveTab:Hide()
+    end
+    self.ActiveTab = tab
+    tab:Show()
+end
+
+function Window:AddKeybind(key, action, callback)
+    self.Keybinds:AddKeybind(key, action, callback)
+end
+
+function Window:Toggle(show)
+    if show ~= nil then
+        self.Visible = show
+    else
+        self.Visible = not self.Visible
+    end
+    self.Main.Visible = self.Visible
+    self.Keybinds.Container.Visible = self.Visible
+    self.NameTag.Container.Visible = self.Visible
+end
+
+function Window:Destroy()
+    self.Gui:Destroy()
+end
+
+-- ==================== SYMBOL LIBRARY ====================
+function Symbol:CreateWindow(title)
+    return Window.New(title)
+end
+
+return Symbol
