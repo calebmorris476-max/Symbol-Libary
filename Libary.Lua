@@ -1,6 +1,7 @@
 --[[
     Symbol.hit UI Library
     A 1:1 recreation of the Symbol.hit cheat GUI with Theme Changers
+    FIXED: Proper ZIndex layering for tabs, dropdowns, toggles, color pickers
 ]]
 
 local Symbol = {}
@@ -458,6 +459,7 @@ function ColorPicker.New(parent, text, defaultColor, callback)
         BackgroundTransparency = 1,
         Size = UDim2.new(1, 0, 0, 32),
         ClipsDescendants = false,
+        ZIndex = 5,
     })
 
     self.Label = Create("TextLabel", {
@@ -471,6 +473,7 @@ function ColorPicker.New(parent, text, defaultColor, callback)
         TextColor3 = Colors.Text,
         TextSize = 13,
         TextXAlignment = Enum.TextXAlignment.Left,
+        ZIndex = 5,
     })
     RegisterThemeObject(self.Label, "TextColor3", "Text")
 
@@ -485,6 +488,7 @@ function ColorPicker.New(parent, text, defaultColor, callback)
         Font = Enum.Font.SourceSans,
         Text = "",
         AutoButtonColor = false,
+        ZIndex = 5,
     })
     RegisterThemeObject(self.Button, "BorderColor3", "Border")
 
@@ -499,6 +503,7 @@ function ColorPicker.New(parent, text, defaultColor, callback)
         TextColor3 = Colors.TextBright,
         TextSize = 11,
         TextXAlignment = Enum.TextXAlignment.Left,
+        ZIndex = 5,
     })
     RegisterThemeObject(self.HexLabel, "TextColor3", "TextBright")
 
@@ -511,7 +516,7 @@ function ColorPicker.New(parent, text, defaultColor, callback)
         Size = UDim2.new(0, 180, 0, 160),
         Position = UDim2.new(0, 0, 1, 2),
         Visible = false,
-        ZIndex = 20,
+        ZIndex = 25,
     })
     RegisterThemeObject(self.PickerFrame, "BackgroundColor3", "Background")
     RegisterThemeObject(self.PickerFrame, "BorderColor3", "Border")
@@ -523,7 +528,7 @@ function ColorPicker.New(parent, text, defaultColor, callback)
         BorderSizePixel = 0,
         Size = UDim2.new(0, 130, 0, 100),
         Position = UDim2.new(0, 8, 0, 8),
-        ZIndex = 20,
+        ZIndex = 25,
     })
 
     local satGradient = Create("UIGradient", {
@@ -545,7 +550,7 @@ function ColorPicker.New(parent, text, defaultColor, callback)
         BackgroundColor3 = Color3.new(0, 0, 0),
         BorderSizePixel = 0,
         Size = UDim2.new(1, 0, 1, 0),
-        ZIndex = 20,
+        ZIndex = 25,
     })
 
     local valGradient = Create("UIGradient", {
@@ -568,7 +573,7 @@ function ColorPicker.New(parent, text, defaultColor, callback)
         BorderSizePixel = 0,
         Size = UDim2.new(0, 16, 0, 100),
         Position = UDim2.new(0, 144, 0, 8),
-        ZIndex = 20,
+        ZIndex = 25,
     })
 
     local hueGradient = Create("UIGradient", {
@@ -593,7 +598,7 @@ function ColorPicker.New(parent, text, defaultColor, callback)
         BorderSizePixel = 1,
         Size = UDim2.new(0, 50, 0, 20),
         Position = UDim2.new(0, 8, 0, 115),
-        ZIndex = 20,
+        ZIndex = 25,
     })
     RegisterThemeObject(self.Preview, "BorderColor3", "Border")
 
@@ -609,7 +614,7 @@ function ColorPicker.New(parent, text, defaultColor, callback)
         Text = tostring(math.floor(self.Value.R * 255)),
         TextColor3 = Colors.Text,
         TextSize = 11,
-        ZIndex = 20,
+        ZIndex = 25,
         ClearTextOnFocus = false,
     })
     RegisterThemeObject(self.RInput, "BackgroundColor3", "DropdownBg")
@@ -628,7 +633,7 @@ function ColorPicker.New(parent, text, defaultColor, callback)
         Text = tostring(math.floor(self.Value.G * 255)),
         TextColor3 = Colors.Text,
         TextSize = 11,
-        ZIndex = 20,
+        ZIndex = 25,
         ClearTextOnFocus = false,
     })
     RegisterThemeObject(self.GInput, "BackgroundColor3", "DropdownBg")
@@ -647,7 +652,7 @@ function ColorPicker.New(parent, text, defaultColor, callback)
         Text = tostring(math.floor(self.Value.B * 255)),
         TextColor3 = Colors.Text,
         TextSize = 11,
-        ZIndex = 20,
+        ZIndex = 25,
         ClearTextOnFocus = false,
     })
     RegisterThemeObject(self.BInput, "BackgroundColor3", "DropdownBg")
@@ -665,7 +670,7 @@ function ColorPicker.New(parent, text, defaultColor, callback)
         Text = "Apply",
         TextColor3 = Colors.Black,
         TextSize = 11,
-        ZIndex = 20,
+        ZIndex = 25,
         AutoButtonColor = false,
     })
     RegisterThemeObject(self.ApplyBtn, "BackgroundColor3", "Accent")
@@ -681,7 +686,7 @@ function ColorPicker.New(parent, text, defaultColor, callback)
         Text = "Cancel",
         TextColor3 = Colors.TextBright,
         TextSize = 11,
-        ZIndex = 20,
+        ZIndex = 25,
         AutoButtonColor = false,
     })
     RegisterThemeObject(self.CancelBtn, "BackgroundColor3", "Border")
@@ -804,6 +809,7 @@ function Checkbox.New(parent, text, default, callback)
         Parent = parent,
         BackgroundTransparency = 1,
         Size = UDim2.new(1, 0, 0, 18),
+        ZIndex = 5,
     })
 
     self.Box = Create("Frame", {
@@ -814,6 +820,7 @@ function Checkbox.New(parent, text, default, callback)
         BorderSizePixel = 1,
         Size = UDim2.new(0, 10, 0, 10),
         Position = UDim2.new(0, 4, 0, 4),
+        ZIndex = 5,
     })
     RegisterThemeObject(self.Box, "BackgroundColor3", "CheckboxBg")
     RegisterThemeObject(self.Box, "BorderColor3", "CheckboxBorder")
@@ -826,6 +833,7 @@ function Checkbox.New(parent, text, default, callback)
         Size = UDim2.new(0, 6, 0, 6),
         Position = UDim2.new(0, 2, 0, 2),
         Visible = self.Value,
+        ZIndex = 5,
     })
     RegisterThemeObject(self.Check, "BackgroundColor3", "Accent")
 
@@ -836,6 +844,7 @@ function Checkbox.New(parent, text, default, callback)
         BorderSizePixel = 0,
         Size = UDim2.new(1, 0, 1, 0),
         BackgroundTransparency = 0.5,
+        ZIndex = 5,
     })
     RegisterThemeObject(checkGlow, "BackgroundColor3", "AccentBright")
 
@@ -850,6 +859,7 @@ function Checkbox.New(parent, text, default, callback)
         TextColor3 = Colors.Text,
         TextSize = 14,
         TextXAlignment = Enum.TextXAlignment.Left,
+        ZIndex = 5,
     })
     RegisterThemeObject(self.Label, "TextColor3", "Text")
 
@@ -897,6 +907,7 @@ function Dropdown.New(parent, text, options, callback)
         BackgroundTransparency = 1,
         Size = UDim2.new(1, 0, 0, 32),
         ClipsDescendants = false,
+        ZIndex = 5,
     })
 
     self.Label = Create("TextLabel", {
@@ -910,6 +921,7 @@ function Dropdown.New(parent, text, options, callback)
         TextColor3 = Colors.Text,
         TextSize = 13,
         TextXAlignment = Enum.TextXAlignment.Left,
+        ZIndex = 5,
     })
     RegisterThemeObject(self.Label, "TextColor3", "Text")
 
@@ -927,6 +939,7 @@ function Dropdown.New(parent, text, options, callback)
         TextSize = 12,
         TextXAlignment = Enum.TextXAlignment.Left,
         AutoButtonColor = false,
+        ZIndex = 5,
     })
     RegisterThemeObject(self.Button, "BackgroundColor3", "DropdownBg")
     RegisterThemeObject(self.Button, "BorderColor3", "DropdownBorder")
@@ -945,6 +958,7 @@ function Dropdown.New(parent, text, options, callback)
         TextColor3 = Colors.Text,
         TextSize = 12,
         TextXAlignment = Enum.TextXAlignment.Center,
+        ZIndex = 5,
     })
     RegisterThemeObject(self.Arrow, "TextColor3", "Text")
 
@@ -958,7 +972,7 @@ function Dropdown.New(parent, text, options, callback)
         Position = UDim2.new(0, 0, 1, 2),
         Visible = false,
         ClipsDescendants = true,
-        ZIndex = 10,
+        ZIndex = 20,
     })
     RegisterThemeObject(self.DropFrame, "BackgroundColor3", "DropdownBg")
     RegisterThemeObject(self.DropFrame, "BorderColor3", "DropdownBorder")
@@ -978,7 +992,7 @@ function Dropdown.New(parent, text, options, callback)
             TextColor3 = Colors.Text,
             TextSize = 12,
             TextXAlignment = Enum.TextXAlignment.Left,
-            ZIndex = 10,
+            ZIndex = 20,
             AutoButtonColor = false,
         })
         RegisterThemeObject(btn, "BackgroundColor3", "DropdownBg")
@@ -1041,6 +1055,7 @@ function Slider.New(parent, text, min, max, default, callback)
         Parent = parent,
         BackgroundTransparency = 1,
         Size = UDim2.new(1, 0, 0, 28),
+        ZIndex = 5,
     })
 
     self.Label = Create("TextLabel", {
@@ -1054,6 +1069,7 @@ function Slider.New(parent, text, min, max, default, callback)
         TextColor3 = Colors.Text,
         TextSize = 13,
         TextXAlignment = Enum.TextXAlignment.Left,
+        ZIndex = 5,
     })
     RegisterThemeObject(self.Label, "TextColor3", "Text")
 
@@ -1064,6 +1080,7 @@ function Slider.New(parent, text, min, max, default, callback)
         BorderSizePixel = 0,
         Size = UDim2.new(0, 140, 0, 4),
         Position = UDim2.new(0, 20, 0, 18),
+        ZIndex = 5,
     })
     RegisterThemeObject(self.Track, "BackgroundColor3", "SliderTrack")
 
@@ -1074,7 +1091,7 @@ function Slider.New(parent, text, min, max, default, callback)
         BorderSizePixel = 0,
         Size = UDim2.new(1, 0, 1, 0),
         BackgroundTransparency = 0.7,
-        ZIndex = 0,
+        ZIndex = 5,
     })
     trackBorder.Size = UDim2.new(1, 4, 1, 4)
     trackBorder.Position = UDim2.new(0, -2, 0, -2)
@@ -1086,6 +1103,7 @@ function Slider.New(parent, text, min, max, default, callback)
         BackgroundColor3 = Colors.SliderFill,
         BorderSizePixel = 0,
         Size = UDim2.new(0, 0, 1, 0),
+        ZIndex = 5,
     })
     RegisterThemeObject(self.Fill, "BackgroundColor3", "SliderFill")
 
@@ -1096,6 +1114,7 @@ function Slider.New(parent, text, min, max, default, callback)
         BorderSizePixel = 0,
         Size = UDim2.new(1, 0, 1, 0),
         BackgroundTransparency = 0.3,
+        ZIndex = 5,
     })
     fillGlow.Size = UDim2.new(1, 4, 1, 4)
     fillGlow.Position = UDim2.new(0, -2, 0, -2)
@@ -1112,6 +1131,7 @@ function Slider.New(parent, text, min, max, default, callback)
         TextColor3 = Colors.Text,
         TextSize = 12,
         TextXAlignment = Enum.TextXAlignment.Left,
+        ZIndex = 5,
     })
     RegisterThemeObject(self.ValueLabel, "TextColor3", "Text")
 
@@ -1173,6 +1193,7 @@ function Section.New(parent, title)
         BorderSizePixel = 1,
         Size = UDim2.new(0, 230, 0, 50),
         AutomaticSize = Enum.AutomaticSize.Y,
+        ZIndex = 2,
     })
     RegisterThemeObject(self.Container, "BackgroundColor3", "SectionBg")
     RegisterThemeObject(self.Container, "BorderColor3", "Border")
@@ -1188,6 +1209,7 @@ function Section.New(parent, title)
         TextColor3 = Colors.SectionTitle,
         TextSize = 13,
         TextXAlignment = Enum.TextXAlignment.Left,
+        ZIndex = 2,
     })
     RegisterThemeObject(self.Title, "TextColor3", "SectionTitle")
 
@@ -1198,6 +1220,7 @@ function Section.New(parent, title)
         BorderSizePixel = 0,
         Size = UDim2.new(1, -10, 0, 1),
         Position = UDim2.new(0, 5, 0, 18),
+        ZIndex = 2,
     })
     RegisterThemeObject(self.Underline, "BackgroundColor3", "SectionUnderline")
 
@@ -1208,6 +1231,7 @@ function Section.New(parent, title)
         Size = UDim2.new(1, -10, 0, 0),
         Position = UDim2.new(0, 5, 0, 22),
         AutomaticSize = Enum.AutomaticSize.Y,
+        ZIndex = 2,
     })
 
     ListLayout(self.Content, 2)
@@ -1255,6 +1279,7 @@ function Tab.New(parent, name, window)
         TextColor3 = Colors.TabInactive,
         TextSize = 13,
         AutoButtonColor = false,
+        ZIndex = 15,
     })
     RegisterThemeObject(self.Button, "TextColor3", "TabInactive")
 
@@ -1266,6 +1291,7 @@ function Tab.New(parent, name, window)
         Size = UDim2.new(1, 0, 0, 2),
         Position = UDim2.new(0, 0, 1, -2),
         Visible = false,
+        ZIndex = 15,
     })
     RegisterThemeObject(self.Underline, "BackgroundColor3", "Accent")
 
@@ -1275,6 +1301,7 @@ function Tab.New(parent, name, window)
         BackgroundTransparency = 1,
         Size = UDim2.new(1, 0, 1, 0),
         Visible = false,
+        ZIndex = 1,
     })
 
     self.LeftColumn = Create("Frame", {
@@ -1283,6 +1310,7 @@ function Tab.New(parent, name, window)
         BackgroundTransparency = 1,
         Size = UDim2.new(0, 240, 1, 0),
         Position = UDim2.new(0, 5, 0, 0),
+        ZIndex = 1,
     })
 
     self.RightColumn = Create("Frame", {
@@ -1291,6 +1319,7 @@ function Tab.New(parent, name, window)
         BackgroundTransparency = 1,
         Size = UDim2.new(0, 240, 1, 0),
         Position = UDim2.new(0, 255, 0, 0),
+        ZIndex = 1,
     })
 
     ListLayout(self.LeftColumn, 8)
@@ -1339,6 +1368,7 @@ function KeybindsPanel.New(parent)
         BorderSizePixel = 1,
         Size = UDim2.new(0, 167, 0, 91),
         Position = UDim2.new(0, 10, 0, 10),
+        ZIndex = 15,
     })
     RegisterThemeObject(self.Container, "BackgroundColor3", "KeybindsBg")
     RegisterThemeObject(self.Container, "BorderColor3", "KeybindsBorder")
@@ -1349,6 +1379,7 @@ function KeybindsPanel.New(parent)
         BackgroundColor3 = Colors.KeybindsTitleBg,
         BorderSizePixel = 0,
         Size = UDim2.new(1, 0, 0, 16),
+        ZIndex = 15,
     })
     RegisterThemeObject(self.TitleBar, "BackgroundColor3", "KeybindsTitleBg")
 
@@ -1362,6 +1393,7 @@ function KeybindsPanel.New(parent)
         TextColor3 = Colors.Accent,
         TextSize = 12,
         TextXAlignment = Enum.TextXAlignment.Center,
+        ZIndex = 15,
     })
     RegisterThemeObject(self.Title, "TextColor3", "Accent")
 
@@ -1371,6 +1403,7 @@ function KeybindsPanel.New(parent)
         BackgroundTransparency = 1,
         Size = UDim2.new(1, -10, 1, -22),
         Position = UDim2.new(0, 5, 0, 18),
+        ZIndex = 15,
     })
 
     ListLayout(self.Content, 2)
@@ -1384,6 +1417,7 @@ function KeybindsPanel:AddKeybind(key, action, callback)
         Parent = self.Content,
         BackgroundTransparency = 1,
         Size = UDim2.new(1, 0, 0, 14),
+        ZIndex = 15,
     })
 
     local keyLabel = Create("TextLabel", {
@@ -1396,6 +1430,7 @@ function KeybindsPanel:AddKeybind(key, action, callback)
         TextColor3 = Colors.Accent,
         TextSize = 12,
         TextXAlignment = Enum.TextXAlignment.Left,
+        ZIndex = 15,
     })
     RegisterThemeObject(keyLabel, "TextColor3", "Accent")
 
@@ -1410,6 +1445,7 @@ function KeybindsPanel:AddKeybind(key, action, callback)
         TextColor3 = Colors.KeybindsText,
         TextSize = 12,
         TextXAlignment = Enum.TextXAlignment.Left,
+        ZIndex = 15,
     })
     RegisterThemeObject(actionLabel, "TextColor3", "KeybindsText")
 
@@ -1437,6 +1473,7 @@ function NameTag.New(parent, text)
         BorderSizePixel = 1,
         Size = UDim2.new(0, 131, 0, 24),
         Position = UDim2.new(1, -141, 0, 10),
+        ZIndex = 15,
     })
     RegisterThemeObject(self.Container, "BackgroundColor3", "NameTagBg")
     RegisterThemeObject(self.Container, "BorderColor3", "NameTagBorder")
@@ -1451,6 +1488,7 @@ function NameTag.New(parent, text)
         TextColor3 = Colors.NameTagText,
         TextSize = 12,
         TextXAlignment = Enum.TextXAlignment.Center,
+        ZIndex = 15,
     })
     RegisterThemeObject(self.Label, "TextColor3", "NameTagText")
 
@@ -1467,11 +1505,13 @@ function Window.New(title)
     self.ActiveTab = nil
     self.Visible = true
 
+    -- CRITICAL: Use Global ZIndexBehavior so ZIndex works across the entire UI
     self.Gui = Create("ScreenGui", {
         Name = "SymbolHitUI",
         Parent = game.CoreGui or LocalPlayer:WaitForChild("PlayerGui"),
         ResetOnSpawn = false,
-        ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+        ZIndexBehavior = Enum.ZIndexBehavior.Global,
+        DisplayOrder = 999,
     })
 
     self.Main = Create("Frame", {
@@ -1482,6 +1522,7 @@ function Window.New(title)
         BorderSizePixel = 1,
         Size = UDim2.new(0, 510, 0, 652),
         Position = UDim2.new(0.5, -255, 0.5, -326),
+        ZIndex = 10,
     })
     RegisterThemeObject(self.Main, "BackgroundColor3", "Background")
     RegisterThemeObject(self.Main, "BorderColor3", "OuterBorder")
@@ -1490,15 +1531,18 @@ function Window.New(title)
         Color = Colors.OuterBorder,
         Thickness = 1,
         Parent = self.Main,
+        ZIndex = 10,
     })
     RegisterThemeObject(mainStroke, "Color", "OuterBorder")
 
+    -- Title bar at top (above tabs)
     self.TitleBar = Create("Frame", {
         Name = "TitleBar",
         Parent = self.Main,
         BackgroundTransparency = 1,
         Size = UDim2.new(1, 0, 0, 20),
         Position = UDim2.new(0, 0, 0, 0),
+        ZIndex = 15,
     })
 
     self.Title = Create("TextLabel", {
@@ -1511,25 +1555,30 @@ function Window.New(title)
         TextColor3 = Colors.Accent,
         TextSize = 13,
         TextXAlignment = Enum.TextXAlignment.Center,
+        ZIndex = 15,
     })
     RegisterThemeObject(self.Title, "TextColor3", "Accent")
 
+    -- Tab bar with HIGH ZIndex so tabs render above everything
     self.TabBar = Create("Frame", {
         Name = "TabBar",
         Parent = self.Main,
         BackgroundTransparency = 1,
         Size = UDim2.new(1, -20, 0, 28),
         Position = UDim2.new(0, 10, 0, 20),
+        ZIndex = 15,
     })
 
     local tabList = ListLayout(self.TabBar, 0, Enum.HorizontalAlignment.Left)
 
+    -- Content frame (lower ZIndex than tabs)
     self.ContentFrame = Create("Frame", {
         Name = "Content",
         Parent = self.Main,
         BackgroundTransparency = 1,
         Size = UDim2.new(1, -20, 1, -55),
         Position = UDim2.new(0, 10, 0, 50),
+        ZIndex = 1,
     })
 
     self.NameTag = NameTag.New(self.Main, title or "Symbol.hit | private")
